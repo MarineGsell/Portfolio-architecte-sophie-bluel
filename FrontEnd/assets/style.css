@@ -90,12 +90,14 @@ nav ul {
 	list-style-type: none;
 
 }
-nav li {
+nav li a {
 	padding: 0 10px;
 	font-size: 1.2em;
+	color: #000000;
+	text-decoration: none;
 }
 
-li:hover {
+li a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -204,9 +206,16 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+#contact a {
+	display: flex;
+	justify-content: center;
+	color: #000000;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
 }
+
 
