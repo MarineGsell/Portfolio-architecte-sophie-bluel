@@ -1,4 +1,4 @@
-// Récupération des pièces depuis le fichier JSON
+// Récupération des travaux depuis le fichier JSON
 const reponse = await fetch("http://localhost:5678/api/works")
 const works = await reponse.json()
 
@@ -119,5 +119,10 @@ btnTous.addEventListener("click", () => {
         legendeProjet.innerHTML = works[i].title
     }
 })
+
+
+
+
+
 
 
