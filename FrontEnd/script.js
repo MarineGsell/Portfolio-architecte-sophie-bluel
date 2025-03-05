@@ -131,31 +131,31 @@ const btnModifier = document.getElementById("btn-modifier")
 // Création d'une fonction pour la page utilisateur
 function pageAdmin() {
     // Ajout de la bannière
-    banner.classList.remove("banner-cachee")
+    banner.classList.remove("cache")
     banner.classList.add("banner")
 
     // Ajout du bouton modifier
-    btnModifier.classList.remove("modification-projet-cache")
+    btnModifier.classList.remove("cache")
     btnModifier.classList.add("modification-projet")
 
     // Switch logout
-    btnLogout.classList.remove("login-logout")
-    btnLogin.classList.add("login-logout")
+    btnLogout.classList.remove("cache")
+    btnLogin.classList.add("cache")
 }
 
 // Création d'une fonction pour la page d'accueil coté client
 function pageClient() {
     // Suppression de la bannière
     banner.classList.remove("banner")
-    banner.classList.add("banner-cachee")
+    banner.classList.add("cache")
 
     // Suppression du bouton modifier
     btnModifier.classList.remove("modification-projet")
-    btnModifier.classList.add("modification-projet-cache")
+    btnModifier.classList.add("cache")
 
     // Switch login
-    btnLogout.classList.add("login-logout")
-    btnLogin.classList.remove("login-logout")
+    btnLogout.classList.add("cache")
+    btnLogin.classList.remove("cache")
 }
 
 // Changement de la page d'accueil en page admin
@@ -173,6 +173,78 @@ btnLogout.addEventListener("click", (Event) => {
     window.localStorage.removeItem("token")
     pageClient()
 })
+
+//Apparition de la modale
+const modale = document.querySelector(".modale")
+btnModifier.addEventListener("click", () => {
+    modale.classList.remove("cache")
+    galerieModale()
+})
+
+//Disparition de la modale
+const modaleBg = document.querySelector(".background-modale")
+const btnEchap = document.getElementById("btn-echap")
+modaleBg.addEventListener("click", () => {
+    modale.classList.add("cache")
+})
+btnEchap.addEventListener("click", () => {
+    modale.classList.add("cache")
+})
+
+//Changement de page de la modale
+const btnAjoutPhoto = document.getElementById("btn-ajout-photo")
+const btnRetour = document.getElementById("btn-retour")
+
+btnAjoutPhoto.addEventListener("click", () => {
+    formulaireModale ()
+})
+
+btnRetour.addEventListener("click", () => {
+    retourGalerie ()
+})
+
+
+
+//Fonction apparition de la galerie
+function galerieModale () {
+    let galerie = document.querySelector(".galerie-photo-modale")
+    galerie.innerHTML=""
+    for (let i = 0; i < works.length; i++) {
+        // Création de mon DOM
+        let item = document.createElement("div")
+        item.classList.add("item")
+        galerie.appendChild(item)
+        let itemPhoto = document.createElement("img")
+        let itemBtn = document.createElement("button")
+        let itemBtnImg = document.createElement("img")
+        itemBtnImg.src = "/assets/icons/supprimer.png"
+        item.appendChild(itemPhoto)
+        item.appendChild(itemBtn)
+        itemBtn.appendChild(itemBtnImg)
+    
+        // Récupération de mes données 
+        itemPhoto.src = works[i].imageUrl
+    }
+}
+
+//Fonction apparition du formulaire
+function formulaireModale () {
+    let galerie = document.getElementById("modale-galerie")
+    galerie.classList.add("cache")
+    const formulaireModale = document.getElementById("modale-form")
+    formulaireModale.classList.remove("cache")
+    btnRetour.classList.remove("cache")
+}
+
+//Fonction retour à la galerie
+function retourGalerie () {
+    let galerie = document.getElementById("modale-galerie")
+    galerie.classList.remove("cache")
+    const formulaireModale = document.getElementById("modale-form")
+    formulaireModale.classList.add("cache")
+    btnRetour.classList.add("cache")
+}
+
 
 
 
