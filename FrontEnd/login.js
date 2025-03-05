@@ -1,3 +1,4 @@
+
 // Récupération de mon formulaire
 const form = document.querySelector(".form-connexion")
 form.addEventListener("submit", (Event) => {
@@ -38,6 +39,8 @@ async function recupUser(admin) {
         console.log("y'a une erreur")
     }
 }
+
+
 
 
 

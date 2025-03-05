@@ -242,4 +242,56 @@ footer nav ul {
 
 }
 
+/* Bannière du mode édition */
+.banner-cachee {
+	display: none;
+}
 
+.banner-edition {
+	margin: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 59px;
+	width: 100vw;
+	background-color: #000000;
+	color: #ffffff;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 21px;
+}
+
+.banner {
+	height: 59px;
+	margin: 0;
+}
+
+/* Ajout du bouton de la modification des projets */
+
+.projets-titre {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 50px;
+}
+
+.modification-projet-cache {
+	display: none;
+}
+
+.modification-projet {
+	display: flex;
+	align-items: center;
+	height: 30px;
+	align-self: flex-start;
+	gap: 21px;
+	padding-left: 40px;
+}
+
+/* Ajout du swith login logout */
+
+.login-logout {
+	display: none;
+}
