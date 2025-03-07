@@ -178,7 +178,6 @@ btnLogout.addEventListener("click", (Event) => {
 const modale = document.querySelector(".modale")
 btnModifier.addEventListener("click", () => {
     modale.classList.remove("cache")
-    galerieModale()
 })
 
 //Disparition de la modale
@@ -216,6 +215,7 @@ function galerieModale () {
         galerie.appendChild(item)
         let itemPhoto = document.createElement("img")
         let itemBtn = document.createElement("button")
+        itemBtn.classList.add("btn-supprimer")
         let itemBtnImg = document.createElement("img")
         itemBtnImg.src = "/assets/icons/supprimer.png"
         item.appendChild(itemPhoto)
@@ -245,9 +245,37 @@ function retourGalerie () {
     btnRetour.classList.add("cache")
 }
 
+galerieModale()
+
+// Suppression d'un item de la galerie de la modale
+// Récupération du bon id
+const btnSupprimer = document.querySelectorAll(".btn-supprimer")
+const worksId = works.map(work => work.id)
+
+for (let i = 0; i < worksId.length; i++) {
+    btnSupprimer.id = `${worksId[i]}`
+    console.log(btnSupprimer.id)
+    i++
+}
 
 
 
+// let i = 0
+// const btnSupprimerId = worksId[i]
+// console.log(btnSupprimerId)
+
+
+
+
+
+
+
+
+// btnSupprimer.forEach(function(item){
+//     item.addEventListener("click", () => {
+//         console.log(btnSupprimerId)
+//     })
+// })
 
 
 

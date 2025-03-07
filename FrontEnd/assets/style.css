@@ -428,6 +428,10 @@ footer nav ul {
 	align-items: center;
 }
 
+.item button:hover {
+	cursor: pointer;
+}
+
 .item button img {
 	width: 9px;
 	height: 11px;
