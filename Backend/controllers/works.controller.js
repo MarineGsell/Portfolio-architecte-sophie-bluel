@@ -12,6 +12,7 @@ exports.create = async (req, res) => {
 	const categoryId = req.body.category;
 	const userId = req.auth.userId;
 	const imageUrl = `${req.protocol}://${host}/images/${req.file.filename}`;
+	console.log('error controller')
 	try{
 		const work = await Works.create({
 			title,
@@ -21,7 +22,8 @@ exports.create = async (req, res) => {
 		})
 		return res.status(201).json(work)
 	}catch (err) {
-		return res.status(500).json({ error: new Error('Something went wrong') })
+//		return res.status(500).json({ error: new Error('Something went wrong') })
+		return res.status(500).json({ error: err })
 	}
 }
 

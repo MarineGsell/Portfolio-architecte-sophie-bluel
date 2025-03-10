@@ -1,3 +1,8 @@
+import { getWorks } from "./script.js"
+import { galerieIndex } from "./index.js"
+
+let works = await getWorks()
+
 //Fonction apparition du formulaire
 export function formulaireModale () {
     let galerie = document.getElementById("modale-galerie")
@@ -42,5 +47,50 @@ export function erreurCategorieForm() {
     messageErreur.style.color = "red"
     messageErreur.innerText = "Vous devez rajouter une catégorie"
 }
+
+// Message validation formulaire
+function validationMessageForm() {
+    let messageValidation = document.createElement("p")
+    const div = document.querySelector(".form-modale")
+    div.appendChild(messageValidation)
+    messageValidation.style.color = "green"
+    messageValidation.style.textAlign = "center"
+    messageValidation.innerText = "Votre projet à bien été ajouté à votre galerie"
+
+}
+
+// Ajouter des projets à la galerie
+export async function ajoutPhotoGalerie() {
+    // Récupération des infos du formulaire
+    const titre = document.getElementById("titre").value
+    const categorie = document.getElementById("categorie").value
+    let photo = document.getElementById("ajout-photo").files[0]     
+    console.log('photo', photo)       
+    console.log(categorie)       
+    
+    // Requête post
+    const formData = new FormData()
+    formData.append("title", titre)
+    formData.append("category", categorie)
+    formData.append("image", photo)
+    const token = window.localStorage.getItem("token")              
+    const reponse = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+        },
+        body: formData
+    })
+    console.log(reponse)
+    if (reponse.ok) {
+        // Actualisation de la galerie
+        works = await getWorks()
+        galerieIndex()
+
+        // Apparition du message de validation
+        validationMessageForm()
+    }
+}
+
 
 

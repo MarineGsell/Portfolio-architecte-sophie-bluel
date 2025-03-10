@@ -1,6 +1,6 @@
 import { pageAdmin, pageClient,} from "./admin.js"
 import { galerieIndex, filtreObjets, filtreAppartements, filtreHotelsResto, filtreTous } from "./index.js"
-import { formulaireModale, retourGalerie, erreurPhotoForm, erreurTitreForm, erreurCategorieForm } from "./modale.js"
+import { formulaireModale, retourGalerie, erreurPhotoForm, erreurTitreForm, erreurCategorieForm, ajoutPhotoGalerie } from "./modale.js"
 
 // Récupération des travaux depuis le fichier JSON
 export async function getWorks() {
@@ -110,10 +110,8 @@ btnAjoutPhoto.addEventListener("click", () => {
             // Règles de validation du formulaire
             if (titre !== "" && categorie !== "" && photo !== "") {
 
-
+                // Ajout des photos à la galerie
                 ajoutPhotoGalerie()
-                // getWorks()
-                // galerieIndex()
             } else {
                 
                 // Messages d'erreurs en cas de formulaire incomplet
@@ -127,64 +125,16 @@ btnAjoutPhoto.addEventListener("click", () => {
                     erreurCategorieForm()
                 }
             }
-
         })
     } catch (error) {
         console.log("erreur : " + error)
     }
-
 })
 
-async function ajoutPhotoGalerie() {
-    // Récupération des infos du formulaire
-    const titre = document.getElementById("titre").value
-    const categorie = document.getElementById("categorie").value
-    let photo = document.getElementById("ajout-photo").files[0]    
-    // let photo = document.querySelector(".photo-projet-ajoutee").src
- 
-    console.log('photo', photo)       
-    console.log(categorie)       
-    
-    // Requête post
-    // const formModale = document.querySelector(".form-modale")
-
-    const formData = new FormData()
-    formData.append("title", titre)
-    formData.append("category", "1")
-    formData.append("userId", 1)
-//    formData.append("category", parseInt(categorie))
-    formData.append("filename", photo)
-    //const data = Object.fromEntries(formData)
-    //console.log(data)
-
-    // const requete = new XMLHttpRequest()
-    // requete.open("POST", "http://localhost:5678/api/works")
-    // requete.send(formData)
-
-//     const request = new XMLHttpRequest();
-// request.open("POST", "https://example.com/submitform.php");
-// request.send(formData);
-                    
-    const reponse = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: { 
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json" 
-        },
-        body: JSON.stringify(formData)
-    })
-    console.log(reponse)
-    if (reponse.ok) {
-        works = await getWorks()
-        await galerieIndex()
-    }
-}
-
+// Activation du bouton de retour
 btnRetour.addEventListener("click", () => {
     retourGalerie ()
 })
-
-
 
 //Fonction apparition de la galerie
 function galerieModale () {
@@ -219,9 +169,9 @@ function galerieModale () {
             if (reponse.ok) {
                 reponse = await fetch("http://localhost:5678/api/works")
                 works = await reponse.json()
-                galerieIndex()
                 galerieModale()
             }
+            galerieIndex()
        })
     }
 }
