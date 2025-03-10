@@ -142,7 +142,7 @@ async function ajoutPhotoGalerie() {
     let photo = document.getElementById("ajout-photo").files[0]    
     // let photo = document.querySelector(".photo-projet-ajoutee").src
  
-    console.log('photo')       
+    console.log('photo', photo)       
     console.log(categorie)       
     
     // Requête post
@@ -150,9 +150,10 @@ async function ajoutPhotoGalerie() {
 
     const formData = new FormData()
     formData.append("title", titre)
-    formData.append("category", 1)
+    formData.append("category", "1")
+    formData.append("userId", 1)
 //    formData.append("category", parseInt(categorie))
-    formData.append("image", photo)
+    formData.append("filename", photo)
     //const data = Object.fromEntries(formData)
     //console.log(data)
 
