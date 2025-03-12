@@ -138,6 +138,7 @@ export function galerieModale () {
                 works = await reponse.json()
                 console.log(works)
                 galerieModale()
+                majGalerieIndex()
                 
             }
        })
