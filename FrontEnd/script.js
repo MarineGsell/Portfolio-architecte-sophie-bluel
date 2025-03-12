@@ -1,6 +1,6 @@
 import { loginAdmin, logoutAdmin } from "./admin.js"
 import { galerieIndex, filtreObjets, filtreAppartements, filtreHotelsResto, filtreTous } from "./index.js"
-import { formulaireModale, retourGalerie, erreurPhotoForm, erreurTitreForm, erreurCategorieForm, ajoutPhotoGalerie, openModale, closeModale, } from "./modale.js"
+import { formulaireModale, retourGalerie, erreurPhotoForm, erreurTitreForm, erreurCategorieForm, ajoutPhotoGalerie, openModale, closeModale, photoInput } from "./modale.js"
 
 // Récupération des travaux depuis le fichier JSON
 export async function getWorks() {
@@ -9,6 +9,7 @@ export async function getWorks() {
     return works
 }
 let works = await getWorks()
+console.log(works)
 
 //Récupération du token
 const token = window.localStorage.getItem("token")
@@ -48,27 +49,7 @@ btnAjoutPhoto.addEventListener("click", () => {
     formulaireModale ()
 
     //Charger une photo dans l'input
-    let photoAjoutee = document.querySelector(".photo-ajoutee")
-    let inputPhoto = document.getElementById("ajout-photo")
-    inputPhoto.onchange = function() {
-        photoAjoutee.innerHTML =""
-        let photoProjetAjoutee = document.createElement("img")
-        photoAjoutee.appendChild(photoProjetAjoutee)
-        photoProjetAjoutee.classList.add("photo-projet-ajoutee") 
-        photoProjetAjoutee.src = URL.createObjectURL(inputPhoto.files[0])    
-    }  
-
-
-
-
-    // //Changement d'apparence du bouton de validation
-    // 
-    // console.log(btnValidationForm)
-    // btnValidationForm.addEventListener("change", () => {
-    //     if (titre.value !== "" && categorie.value !== "") {
-    //         btnValidationForm.style.backgroundColor = "#1D6154"
-    //     }
-    // })
+    photoInput()
     
     //Ajout d'un projet à la galerie 
     try { 
@@ -96,7 +77,7 @@ btnAjoutPhoto.addEventListener("click", () => {
                 if (titre === "") {
                     erreurTitreForm()
                 }
-                if (titre === "") {
+                if (categorie === "") {
                     erreurCategorieForm()
                 }
             }
@@ -105,6 +86,7 @@ btnAjoutPhoto.addEventListener("click", () => {
         console.log("erreur : " + error)
     }
 })
+
 
 
 
@@ -118,8 +100,6 @@ btnRetour.addEventListener("click", () => {
 
 
 
-
-// rechargementGalerieIndex()
 
 
 

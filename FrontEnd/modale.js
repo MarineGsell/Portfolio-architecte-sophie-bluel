@@ -26,8 +26,8 @@ export function retourGalerie () {
 
 // Messages d'erreurs formulaire
 export function erreurPhotoForm () {
-    let messageErreur = document.createElement("p")
     const div = document.querySelector(".ajout-photo-form")
+    let messageErreur = document.createElement("p")
     div.appendChild(messageErreur)
     messageErreur.style.color = "red"
     messageErreur.innerText = "Vous devez rajouter une photo"
@@ -84,19 +84,17 @@ export async function ajoutPhotoGalerie() {
     })
     console.log(reponse)
     if (reponse.ok) {
-        // Actualisation de la galerie
-        works = await getWorks()
-        galerieIndex()
-        // return works
-
         //Message de validation
         validationMessageForm()
 
+        // Actualisation de la galerie
+        works = await getWorks()
+        majGalerieIndex()
     }
 }
 
+// Ouverture de la modale
 export function openModale() {
-    // Ouverture de la modale
     const btnModifier = document.getElementById("btn-modifier")
     const modale = document.querySelector(".modale")
     btnModifier.addEventListener("click", () => {
@@ -105,7 +103,7 @@ export function openModale() {
     })
 }
 
-//Fonction apparition de la galerie
+// Fonction apparition de la galerie
 export function galerieModale () {
     let galerie = document.querySelector(".galerie-photo-modale")
     galerie.innerHTML=""
@@ -146,7 +144,7 @@ export function galerieModale () {
     }
 }
 
-//Fermeture de la modale
+// Fermeture de la modale
 export function closeModale() {
     const modale = document.querySelector(".modale")
     const modaleBg = document.querySelector(".background-modale")
@@ -159,4 +157,34 @@ export function closeModale() {
     })
 }
 
+// Charger une photo dans l'input
+export function photoInput() {
+    let photoAjoutee = document.querySelector(".photo-ajoutee")
+    let inputPhoto = document.getElementById("ajout-photo")
+    inputPhoto.onchange = function() {
+        photoAjoutee.innerHTML =""
+        let photoProjetAjoutee = document.createElement("img")
+        photoAjoutee.appendChild(photoProjetAjoutee)
+        photoProjetAjoutee.classList.add("photo-projet-ajoutee") 
+        photoProjetAjoutee.src = URL.createObjectURL(inputPhoto.files[0])    
+    } 
+}
 
+// Mise à jour de la galerie 
+function majGalerieIndex() {
+    let galerieInd = document.querySelector(".gallery")
+    galerieInd.innerHTML = ""
+    for (let i = 0; i < works.length; i++) {
+        // Création de mon DOM
+        let projet = document.createElement("figure")
+        galerieInd.appendChild(projet)
+        let photoProjet = document.createElement("img")
+        let legendeProjet = document.createElement("figcaption")
+        projet.appendChild(photoProjet)
+        projet.appendChild(legendeProjet)
+        
+        // Récupération de mes données 
+        photoProjet.src = works[i].imageUrl
+        legendeProjet.innerHTML = works[i].title
+    }
+}
