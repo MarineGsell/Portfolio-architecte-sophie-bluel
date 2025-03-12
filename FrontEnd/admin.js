@@ -1,3 +1,6 @@
+//Récupération du token
+const token = window.localStorage.getItem("token")
+
 // Récupération du DOM
     const btnLogout = document.getElementById("logout")
     const btnLogin = document.getElementById("login")
@@ -33,5 +36,26 @@ export function pageClient() {
     // Switch login
     btnLogout.classList.add("cache")
     btnLogin.classList.remove("cache")
+}
+
+// Changement de la page d'accueil en page admin
+export function loginAdmin() {
+    try {
+        if (token !== null) {
+            pageAdmin()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// Déconnexion page admin
+export function logoutAdmin() {
+    const btnLogout = document.getElementById("logout")
+    btnLogout.addEventListener("click", (Event) => {
+        Event.preventDefault()
+        window.localStorage.removeItem("token")
+        pageClient()
+    })
 }
 

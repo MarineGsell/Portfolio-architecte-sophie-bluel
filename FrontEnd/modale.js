@@ -2,6 +2,7 @@ import { getWorks } from "./script.js"
 import { galerieIndex } from "./index.js"
 
 let works = await getWorks()
+const token = window.localStorage.getItem("token")
 
 //Fonction apparition du formulaire
 export function formulaireModale () {
@@ -49,7 +50,7 @@ export function erreurCategorieForm() {
 }
 
 // Message validation formulaire
-function validationMessageForm() {
+export function validationMessageForm() {
     let messageValidation = document.createElement("p")
     const div = document.querySelector(".form-modale")
     div.appendChild(messageValidation)
@@ -86,11 +87,76 @@ export async function ajoutPhotoGalerie() {
         // Actualisation de la galerie
         works = await getWorks()
         galerieIndex()
+        // return works
 
-        // Apparition du message de validation
+        //Message de validation
         validationMessageForm()
+
     }
 }
 
+export function openModale() {
+    // Ouverture de la modale
+    const btnModifier = document.getElementById("btn-modifier")
+    const modale = document.querySelector(".modale")
+    btnModifier.addEventListener("click", () => {
+        modale.classList.remove("cache")
+        galerieModale()
+    })
+}
+
+//Fonction apparition de la galerie
+export function galerieModale () {
+    let galerie = document.querySelector(".galerie-photo-modale")
+    galerie.innerHTML=""
+    for (let i = 0; i < works.length; i++) {
+        // Création de mon DOM
+        let item = document.createElement("div")
+        item.classList.add("item")
+        galerie.appendChild(item)
+        let itemPhoto = document.createElement("img")
+        let itemBtn = document.createElement("button")
+        itemBtn.classList.add("btn-supprimer")
+        let itemBtnImg = document.createElement("img")
+        itemBtnImg.src = "/assets/icons/supprimer.png"
+        item.appendChild(itemPhoto)
+        item.appendChild(itemBtn)
+        itemBtn.appendChild(itemBtnImg)
+    
+        // Récupération de mes données 
+        itemPhoto.src = works[i].imageUrl
+
+        // Event pour suppression d'un projet
+        itemBtn.addEventListener("click", async () => {
+            let reponse = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                method: 'DELETE',
+                headers: { 
+                    // "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                 },
+            })
+            if (reponse.ok) {
+                reponse = await fetch("http://localhost:5678/api/works")
+                works = await reponse.json()
+                console.log(works)
+                galerieModale()
+                
+            }
+       })
+    }
+}
+
+//Fermeture de la modale
+export function closeModale() {
+    const modale = document.querySelector(".modale")
+    const modaleBg = document.querySelector(".background-modale")
+    const btnEchap = document.getElementById("btn-echap")
+    modaleBg.addEventListener("click", () => {
+        modale.classList.add("cache")
+    })
+    btnEchap.addEventListener("click", () => {
+        modale.classList.add("cache")
+    })
+}
 
 
