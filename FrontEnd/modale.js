@@ -189,7 +189,7 @@ async function ajoutPhotoGalerie() {
 function formValide() {
     // Récupération du DOM
     const form = document.querySelector(".form-modale")
-    const formInputs = form.querySelectorAll('input[required], select[required]')
+    const formInputs = form.querySelectorAll('input, select')
     let btnForm = document.getElementById("btn-validation-form")
     let inputRemplis = true;
 
@@ -210,7 +210,7 @@ function formValide() {
 // Changement d'apparence du bouton du formulaire
 function btnValidationOk() {
     const form = document.querySelector(".form-modale")
-    const formInputs = form.querySelectorAll('input[required], select[required]')
+    const formInputs = form.querySelectorAll('input, select')
 
     // Écouter les changements sur tous les champs
     formInputs.forEach(input => {
