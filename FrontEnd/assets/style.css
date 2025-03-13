@@ -374,7 +374,7 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.form-modale input[type="submit"] {
+.btn-modale-inactif {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
@@ -388,6 +388,21 @@ footer nav ul {
 	display: flex;
 	justify-content: center;
 }
+
+/* .form-modale input[type="submit"] {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+	color: white;
+	background-color: #A7A7A7;
+	border: none;
+	margin : 2em auto ;
+	padding: 10px 40px;
+	text-align: center;
+	border-radius: 60px ;
+	display: flex;
+	justify-content: center;
+} */
 
 /* Galerie de la modale */
 
@@ -451,10 +466,6 @@ footer nav ul {
 	background-color: #E8F1F6;
 }
 
-.ajout-photo-form p {
-	color: #444444;
-}
-
 .ajout-photo-form label{
 	background-color: #CBD6DC;
 	font-family: 'Work Sans';
@@ -498,6 +509,18 @@ footer nav ul {
 
 .champs-form label {
 	margin: 2em 0 1em 0;
+}
+
+.message-erreur {
+	color: red;
+	font-weight: 600;
+	text-align: center;
+}
+
+.message-succes {
+	color: green;
+	font-weight: 600;
+	text-align: center;
 }
 
 /* CSS caché */

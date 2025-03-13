@@ -2,7 +2,7 @@ import { getWorks } from "./script.js"
 
 const works = await getWorks()
 
-// Récupération de la galerie les travaux de l’architecte
+// Création de la galerie de la page d'accueil
 export function galerieIndex() {
     for (let i = 0; i < works.length; i++) {
         // Création de mon DOM
@@ -20,7 +20,7 @@ export function galerieIndex() {
     }
 }
 
-// Réalisation du filtre objet
+// Création des filtres de la galerie
 export function filtreObjets() {
     const btnObjets = document.getElementById("objets")
     btnObjets.addEventListener("click", () => {
@@ -47,8 +47,6 @@ export function filtreObjets() {
         }
     })
 }
-
-// Réalisation du filtre appartements
 export function filtreAppartements() {
     const btnAppartements = document.getElementById("appartements")
     btnAppartements.addEventListener("click", () => {
@@ -75,8 +73,6 @@ export function filtreAppartements() {
         }
     })    
 }
-
-// Réalisation du filtre hotels & restaurants
 export function filtreHotelsResto() {
     const btnHotelsResto = document.getElementById("hotel-resto")
     btnHotelsResto.addEventListener("click", () => {
@@ -103,8 +99,6 @@ export function filtreHotelsResto() {
         }
     })    
 }
-
-// Réalisation du filtre tous
 export function filtreTous() {
     const btnTous = document.getElementById("tous")
     btnTous.addEventListener("click", () => {

@@ -2,13 +2,13 @@
 const token = window.localStorage.getItem("token")
 
 // Récupération du DOM
-    const btnLogout = document.getElementById("logout")
-    const btnLogin = document.getElementById("login")
-    const banner = document.getElementById("banner")
-    const btnModifier = document.getElementById("btn-modifier")
+const btnLogout = document.getElementById("logout")
+const btnLogin = document.getElementById("login")
+const banner = document.getElementById("banner")
+const btnModifier = document.getElementById("btn-modifier")
 
-// Création d'une fonction pour la page utilisateur
-export function pageAdmin() {
+// Page d'accueil coté administrateur
+function pageAdmin() {
     // Ajout de la bannière
     banner.classList.remove("cache")
     banner.classList.add("banner")
@@ -22,8 +22,8 @@ export function pageAdmin() {
     btnLogin.classList.add("cache")
 }
 
-// Création d'une fonction pour la page d'accueil coté client
-export function pageClient() {
+// Page d'accueil côté client
+function pageClient() {
 
     // Suppression de la bannière
     banner.classList.remove("banner")
@@ -38,18 +38,18 @@ export function pageClient() {
     btnLogin.classList.remove("cache")
 }
 
-// Changement de la page d'accueil en page admin
+// Connexion à la page admin
 export function loginAdmin() {
     try {
         if (token !== null) {
             pageAdmin()
         }
     } catch (error) {
-        console.log(error)
+        console.log("Erreur : " + error)
     }
 }
 
-// Déconnexion page admin
+// Déconnexion de la page admin
 export function logoutAdmin() {
     const btnLogout = document.getElementById("logout")
     btnLogout.addEventListener("click", (Event) => {

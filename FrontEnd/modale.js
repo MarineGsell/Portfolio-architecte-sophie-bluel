@@ -1,97 +1,8 @@
 import { getWorks } from "./script.js"
-import { galerieIndex } from "./index.js"
+// import { majGalerieIndex } from "./index.js"
 
 let works = await getWorks()
 const token = window.localStorage.getItem("token")
-
-//Fonction apparition du formulaire
-export function formulaireModale () {
-    let galerie = document.getElementById("modale-galerie")
-    galerie.classList.add("cache")
-    const formModale = document.getElementById("modale-form")
-    formModale.classList.remove("cache")
-    const btnRetour = document.getElementById("btn-retour")
-    btnRetour.classList.remove("cache")
-}
-
-//Fonction retour à la galerie
-export function retourGalerie () {
-    let galerie = document.getElementById("modale-galerie")
-    galerie.classList.remove("cache")
-    const formModale = document.getElementById("modale-form")
-    formModale.classList.add("cache")
-    const btnRetour = document.getElementById("btn-retour")
-    btnRetour.classList.add("cache")
-}
-
-// Messages d'erreurs formulaire
-export function erreurPhotoForm () {
-    const div = document.querySelector(".ajout-photo-form")
-    let messageErreur = document.createElement("p")
-    div.appendChild(messageErreur)
-    messageErreur.style.color = "red"
-    messageErreur.innerText = "Vous devez rajouter une photo"
-}
-
-export function erreurTitreForm () {
-    let messageErreur = document.createElement("p")
-    const div = document.querySelector(".champs-form-titre")
-    div.appendChild(messageErreur)
-    messageErreur.style.color = "red"
-    messageErreur.innerText = "Vous devez rajouter un titre"
-}
-
-export function erreurCategorieForm() {
-    let messageErreur = document.createElement("p")
-    const div = document.querySelector(".champs-form-categorie")
-    div.appendChild(messageErreur)
-    messageErreur.style.color = "red"
-    messageErreur.innerText = "Vous devez rajouter une catégorie"
-}
-
-// Message validation formulaire
-export function validationMessageForm() {
-    let messageValidation = document.createElement("p")
-    const div = document.querySelector(".form-modale")
-    div.appendChild(messageValidation)
-    messageValidation.style.color = "green"
-    messageValidation.style.textAlign = "center"
-    messageValidation.innerText = "Votre projet à bien été ajouté à votre galerie"
-
-}
-
-// Ajouter des projets à la galerie
-export async function ajoutPhotoGalerie() {
-    // Récupération des infos du formulaire
-    const titre = document.getElementById("titre").value
-    const categorie = document.getElementById("categorie").value
-    let photo = document.getElementById("ajout-photo").files[0]     
-    console.log('photo', photo)       
-    console.log(categorie)       
-    
-    // Requête post
-    const formData = new FormData()
-    formData.append("title", titre)
-    formData.append("category", categorie)
-    formData.append("image", photo)
-    const token = window.localStorage.getItem("token")              
-    const reponse = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: { 
-            "Authorization": `Bearer ${token}`,
-        },
-        body: formData
-    })
-    console.log(reponse)
-    if (reponse.ok) {
-        //Message de validation
-        validationMessageForm()
-
-        // Actualisation de la galerie
-        works = await getWorks()
-        majGalerieIndex()
-    }
-}
 
 // Ouverture de la modale
 export function openModale() {
@@ -103,8 +14,79 @@ export function openModale() {
     })
 }
 
-// Fonction apparition de la galerie
-export function galerieModale () {
+// Fermeture de la modale
+export function closeModale() {
+    const modale = document.querySelector(".modale")
+    const modaleBg = document.querySelector(".background-modale")
+    const btnEchap = document.getElementById("btn-echap")
+    modaleBg.addEventListener("click", () => {
+        modale.classList.add("cache")
+    })
+    btnEchap.addEventListener("click", () => {
+        modale.classList.add("cache")
+    })
+}
+
+// Apparition de la galerie dans la modale
+function retourGalerie () {
+    let galerie = document.getElementById("modale-galerie")
+    galerie.classList.remove("cache")
+    const formModale = document.getElementById("modale-form")
+    formModale.classList.add("cache")
+    const btnRetour = document.getElementById("btn-retour")
+    btnRetour.classList.add("cache")
+}
+
+// Changements de page de la modale
+export function switchModaleGalerie() {
+    const btnRetour = document.getElementById("btn-retour")
+    btnRetour.addEventListener("click", () => {
+        retourGalerie()
+        galerieModale()
+    })
+}
+export function switchModaleFormulaire() {
+    const btnAjoutPhoto = document.getElementById("btn-ajout-photo")
+    
+    // Page Formulaire
+    btnAjoutPhoto.addEventListener("click", () => {
+        formulaireModale ()
+    
+        //Charger une photo dans l'input
+        photoInput()
+    
+        // Changement d'apparence du bouton de validation
+        btnValidationOk()
+    
+        //Ajout d'un projet à la galerie 
+        try { 
+            const formModale = document.querySelector(".form-modale")
+            formModale.addEventListener("submit", (Event) => {
+                Event.preventDefault()
+    
+                // Récupération des infos du formulaire
+                const titre = document.getElementById("titre").value
+                const categorie = document.getElementById("categorie").value
+                let photo = document.getElementById("ajout-photo").value
+                    
+                // Règles de validation du formulaire
+                if (titre !== "" && categorie !== "" && photo !== "") {
+                    ajoutPhotoGalerie()
+                } else {
+                    if (photo === "") { erreurPhotoForm() }
+                    if (titre === "") { erreurTitreForm() }
+                    if (categorie === "") { erreurCategorieForm() }
+                }
+            })
+        } catch (error) {
+                console.log("Erreur : " + error)
+        }
+    })
+}
+
+// Galerie de la modale
+// Apparition de la galerie dans la modale
+function galerieModale () {
     let galerie = document.querySelector(".galerie-photo-modale")
     galerie.innerHTML=""
     for (let i = 0; i < works.length; i++) {
@@ -124,7 +106,7 @@ export function galerieModale () {
         // Récupération de mes données 
         itemPhoto.src = works[i].imageUrl
 
-        // Event pour suppression d'un projet
+        // Suppression d'un projet
         itemBtn.addEventListener("click", async () => {
             let reponse = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
                 method: 'DELETE',
@@ -136,30 +118,26 @@ export function galerieModale () {
             if (reponse.ok) {
                 reponse = await fetch("http://localhost:5678/api/works")
                 works = await reponse.json()
-                console.log(works)
                 galerieModale()
                 majGalerieIndex()
-                
             }
        })
     }
 }
 
-// Fermeture de la modale
-export function closeModale() {
-    const modale = document.querySelector(".modale")
-    const modaleBg = document.querySelector(".background-modale")
-    const btnEchap = document.getElementById("btn-echap")
-    modaleBg.addEventListener("click", () => {
-        modale.classList.add("cache")
-    })
-    btnEchap.addEventListener("click", () => {
-        modale.classList.add("cache")
-    })
+// Formulaire de la modale
+// Apparition du formulaire dans la modale
+function formulaireModale () {
+    let galerie = document.getElementById("modale-galerie")
+    galerie.classList.add("cache")
+    const formModale = document.getElementById("modale-form")
+    formModale.classList.remove("cache")
+    const btnRetour = document.getElementById("btn-retour")
+    btnRetour.classList.remove("cache")
 }
 
 // Charger une photo dans l'input
-export function photoInput() {
+function photoInput() {
     let photoAjoutee = document.querySelector(".photo-ajoutee")
     let inputPhoto = document.getElementById("ajout-photo")
     inputPhoto.onchange = function() {
@@ -170,8 +148,116 @@ export function photoInput() {
         photoProjetAjoutee.src = URL.createObjectURL(inputPhoto.files[0])    
     } 
 }
+  
+// Ajout de projets à la galerie via le formulaire
+async function ajoutPhotoGalerie() {      
+    let titre = document.getElementById("titre").value
+    let categorie = document.getElementById("categorie").value
+    let photo = document.getElementById("ajout-photo").files[0]     
+    
+    // Requête post
+    const formData = new FormData()
+    formData.append("title", titre)
+    formData.append("category", categorie)
+    formData.append("image", photo)
+    const token = window.localStorage.getItem("token")              
+    const reponse = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+        },
+        body: formData
+    })
+    if (reponse.ok) {
+        // Message de validation
+        validationMessageForm()
 
-// Mise à jour de la galerie 
+        // Remise à zéro du formulaire
+       	resetForm()		
+        
+        // Suppression du message de validation
+        suppressionMessageValidation()
+    } 
+
+    // Actualisation de la galerie
+    works = await getWorks()
+    majGalerieIndex()
+}
+
+// Bouton du formulaire
+// Fonction pour vérifier si tous les champs sont remplis
+function formValide() {
+    // Récupération du DOM
+    const form = document.querySelector(".form-modale")
+    const formInputs = form.querySelectorAll('input[required], select[required]')
+    let btnForm = document.getElementById("btn-validation-form")
+    let inputRemplis = true;
+
+    // Si un des champs est vide
+    formInputs.forEach(input => {
+        if (!input.value.trim()) {
+        inputRemplis = false
+        }
+    })
+  
+    // Changer l'apparence du bouton selon l'état du formulaire
+    if (inputRemplis) {
+        btnForm.classList.remove("btn-modale-inactif")
+        btnForm.classList.add("btn-modale")
+    }
+}
+
+// Changement d'apparence du bouton du formulaire
+function btnValidationOk() {
+    const form = document.querySelector(".form-modale")
+    const formInputs = form.querySelectorAll('input[required], select[required]')
+
+    // Écouter les changements sur tous les champs
+    formInputs.forEach(input => {
+        input.addEventListener('input', formValide)
+    })
+}
+
+// Messages d'erreurs formulaire
+function erreurPhotoForm () {
+    let messageErreur = document.getElementById("message-erreur-photo")
+    messageErreur.classList.remove("cache")
+}
+function erreurTitreForm () {
+    let messageErreur = document.getElementById("message-erreur-titre")
+    messageErreur.classList.remove("cache")
+}
+function erreurCategorieForm() {
+    let messageErreur = document.getElementById("message-erreur-categorie")
+    messageErreur.classList.remove("cache")
+}
+
+// Message de validation du formulaire
+function validationMessageForm() {
+    let messageValidation = document.querySelector(".message-succes")
+    messageValidation.classList.remove("cache")
+}
+function suppressionMessageValidation() {
+    let form = document.querySelector(".form-modale")
+    form.addEventListener("input", () => {
+        let messageValidation = document.querySelector(".message-succes")
+        messageValidation.classList.add("cache")
+    })
+}
+
+// Remise à zéro du formulaire
+function resetForm() {
+    let form = document.querySelector(".form-modale")
+    form.reset()
+    let photoAjoutee = document.querySelector(".photo-ajoutee")
+    photoAjoutee.innerHTML = ""
+    let iconeImage = document.createElement("img")
+    photoAjoutee.appendChild(iconeImage)
+    iconeImage.src = "./assets/icons/image.png"
+
+}
+
+// Mise à jour de la galerie de la page d'accueil
 function majGalerieIndex() {
     let galerieInd = document.querySelector(".gallery")
     galerieInd.innerHTML = ""
@@ -189,3 +275,12 @@ function majGalerieIndex() {
         legendeProjet.innerHTML = works[i].title
     }
 }
+
+
+
+
+
+
+
+
+    
