@@ -30,7 +30,6 @@ export function filtreObjets() {
         })
         // Vider le HTML pour éviter les doublons
         projets.innerHTML = ""
-    
         for (let i = 0; i < worksObjets.length; i++) {
             // Création de mon DOM
             let projets = document.querySelector(".gallery")

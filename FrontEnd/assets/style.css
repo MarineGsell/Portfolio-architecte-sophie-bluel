@@ -149,6 +149,7 @@ li a:hover {
 .filtres button:hover {
 	color: #ffffff;
 	background-color: #1D6154;
+	cursor: pointer;
 }
 
 .gallery {
