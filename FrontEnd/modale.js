@@ -27,22 +27,13 @@ export function closeModale() {
     })
 }
 
-// Apparition de la galerie dans la modale
-function retourGalerie () {
-    let galerie = document.getElementById("modale-galerie")
-    galerie.classList.remove("cache")
-    const formModale = document.getElementById("modale-form")
-    formModale.classList.add("cache")
-    const btnRetour = document.getElementById("btn-retour")
-    btnRetour.classList.add("cache")
-}
-
 // Changements de page de la modale
 export function switchModaleGalerie() {
     const btnRetour = document.getElementById("btn-retour")
     btnRetour.addEventListener("click", () => {
         retourGalerie()
         galerieModale()
+        // resetForm()
     })
 }
 export function switchModaleFormulaire() {
@@ -51,36 +42,6 @@ export function switchModaleFormulaire() {
     // Page Formulaire
     btnAjoutPhoto.addEventListener("click", () => {
         formulaireModale ()
-    
-        //Charger une photo dans l'input
-        photoInput()
-    
-        // Changement d'apparence du bouton de validation
-        btnValidationOk()
-    
-        //Ajout d'un projet à la galerie 
-        try { 
-            const formModale = document.querySelector(".form-modale")
-            formModale.addEventListener("submit", (Event) => {
-                Event.preventDefault()
-    
-                // Récupération des infos du formulaire
-                const titre = document.getElementById("titre").value
-                const categorie = document.getElementById("categorie").value
-                let photo = document.getElementById("ajout-photo").value
-                    
-                // Règles de validation du formulaire
-                if (titre !== "" && categorie !== "" && photo !== "") {
-                    ajoutPhotoGalerie()
-                } else {
-                    if (photo === "") { erreurPhotoForm() }
-                    if (titre === "") { erreurTitreForm() }
-                    if (categorie === "") { erreurCategorieForm() }
-                }
-            })
-        } catch (error) {
-                console.log("Erreur : " + error)
-        }
     })
 }
 
@@ -105,24 +66,32 @@ function galerieModale () {
     
         // Récupération de mes données 
         itemPhoto.src = works[i].imageUrl
+        itemPhoto.alt = works[i].title
 
         // Suppression d'un projet
         itemBtn.addEventListener("click", async () => {
-            let reponse = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
-                method: 'DELETE',
-                headers: { 
-                    // "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                 },
-            })
-            if (reponse.ok) {
-                reponse = await fetch("http://localhost:5678/api/works")
-                works = await reponse.json()
-                galerieModale()
-                majGalerieIndex()
+            if (window.confirm("Souhaitez-vous vraiment supprimer le projet ?")) {
+                let reponse = await fetch(`http://localhost:5678/api/works/${works[i].id}`, {
+                    method: 'DELETE',
+                    headers: { "Authorization": `Bearer ${token}`,},
+                })
+                if (reponse.ok) {
+                    reponse = await fetch("http://localhost:5678/api/works")
+                    works = await reponse.json()
+                    galerieModale()
+                    majGalerieIndex()
+                }
             }
-       })
+        })
     }
+}
+function retourGalerie () {
+    let galerie = document.getElementById("modale-galerie")
+    galerie.classList.remove("cache")
+    const formModale = document.getElementById("modale-form")
+    formModale.classList.add("cache")
+    const btnRetour = document.getElementById("btn-retour")
+    btnRetour.classList.add("cache")
 }
 
 // Formulaire de la modale
@@ -134,6 +103,40 @@ function formulaireModale () {
     formModale.classList.remove("cache")
     const btnRetour = document.getElementById("btn-retour")
     btnRetour.classList.remove("cache")
+}
+
+// Complétion formulaire
+export function completeForm() {
+        //Charger une photo dans l'input
+        photoInput()
+    
+        // Changement d'apparence du bouton de validation
+        btnValidationOk()
+    
+        //Ajout d'un projet à la galerie 
+        try { 
+            const formModale = document.querySelector(".form-modale")
+            formModale.addEventListener("submit", (Event) => {
+                Event.preventDefault()
+    
+                // Récupération des infos du formulaire
+                const titre = document.getElementById("titre").value
+                const categorie = document.getElementById("categorie").value
+                let photo = document.getElementById("ajout-photo").value
+                    
+                // Règles de validation du formulaire
+                if (titre !== "" && categorie !== "" && photo !== "") {
+                    ajoutPhotoGalerie()
+                    SupErreurPhotoForm()
+                } else {
+                    if (photo === "") { erreurPhotoForm() }
+                    if (titre === "") { erreurTitreForm() }
+                    if (categorie === "") { erreurCategorieForm() }
+                }
+            })
+        } catch (error) {
+                console.log("Erreur : " + error)
+        }
 }
 
 // Charger une photo dans l'input
@@ -174,9 +177,8 @@ async function ajoutPhotoGalerie() {
 
         // Remise à zéro du formulaire
        	resetForm()		
-        
-        // Suppression du message de validation
         suppressionMessageValidation()
+        btnValidationInactif()
     } 
 
     // Actualisation de la galerie
@@ -208,17 +210,29 @@ function formValide() {
 }
 
 // Changement d'apparence du bouton du formulaire
+// Bouton Actif
 function btnValidationOk() {
     const form = document.querySelector(".form-modale")
-    const formInputs = form.querySelectorAll('input, select')
+    const formInputs = form.querySelectorAll("input, select")
 
     // Écouter les changements sur tous les champs
     formInputs.forEach(input => {
-        input.addEventListener('input', formValide)
+        input.addEventListener("input", formValide)
+        input.addEventListener("input", SupErreurPhotoForm)
+        input.addEventListener("input", SupErreurTitreForm)
+        input.addEventListener("input", SupErreurCategorieForm)
     })
 }
 
+// Bouton inactif
+function btnValidationInactif() {
+    let btnForm = document.getElementById("btn-validation-form")
+    btnForm.classList.remove("btn-modale")
+    btnForm.classList.add("btn-modale-inactif")
+}
+
 // Messages d'erreurs formulaire
+// Afichage des messages d'erreur
 function erreurPhotoForm () {
     let messageErreur = document.getElementById("message-erreur-photo")
     messageErreur.classList.remove("cache")
@@ -230,6 +244,20 @@ function erreurTitreForm () {
 function erreurCategorieForm() {
     let messageErreur = document.getElementById("message-erreur-categorie")
     messageErreur.classList.remove("cache")
+}
+
+// Suppression des messages d'erreur
+function SupErreurTitreForm () {
+    let messageErreur = document.getElementById("message-erreur-titre")
+    messageErreur.classList.add("cache")
+}
+function SupErreurPhotoForm () {
+    let messageErreur = document.getElementById("message-erreur-photo")
+    messageErreur.classList.add("cache")
+}
+function SupErreurCategorieForm() {
+    let messageErreur = document.getElementById("message-erreur-categorie")
+    messageErreur.classList.add("cache")
 }
 
 // Message de validation du formulaire
@@ -254,7 +282,6 @@ function resetForm() {
     let iconeImage = document.createElement("img")
     photoAjoutee.appendChild(iconeImage)
     iconeImage.src = "./assets/icons/image.png"
-
 }
 
 // Mise à jour de la galerie de la page d'accueil

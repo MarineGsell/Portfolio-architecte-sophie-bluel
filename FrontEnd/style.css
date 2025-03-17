@@ -28,24 +28,30 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
 	max-width: 1140px;
@@ -53,11 +59,13 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+
 section {
 	margin: 50px 0
 }
@@ -84,12 +92,14 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
 
 }
+
 nav li a {
 	padding: 0 10px;
 	font-size: 1.2em;
@@ -100,13 +110,16 @@ nav li a {
 li a:hover {
 	color: #B1663C;
 }
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1
 }
+
 #introduction img {
 	display: block;
 	margin: auto;
@@ -116,6 +129,7 @@ li a:hover {
 #introduction article {
 	flex: 1
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -123,6 +137,7 @@ li a:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -164,6 +179,7 @@ li a:hover {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
 margin: auto;
@@ -188,9 +204,11 @@ margin: auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #contact label {
 	margin: 2em 0 1em 0;
 }
+
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -233,14 +251,6 @@ footer nav ul {
 	border-radius: 60px ;
 	display: flex;
 	justify-content: center;
-}
-
-.erreur {
-	color: red;
-	display: flex;
-	justify-content: center;
-	margin-top: 40px;
-
 }
 
 /* Bannière du mode édition */
@@ -390,21 +400,6 @@ footer nav ul {
 	justify-content: center;
 }
 
-/* .form-modale input[type="submit"] {
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 14px;
-	color: white;
-	background-color: #A7A7A7;
-	border: none;
-	margin : 2em auto ;
-	padding: 10px 40px;
-	text-align: center;
-	border-radius: 60px ;
-	display: flex;
-	justify-content: center;
-} */
-
 /* Galerie de la modale */
 
 #modale-galerie {
@@ -425,7 +420,7 @@ footer nav ul {
 
 .item img {
 	width: 100%;
-	height: 100%;
+	height: auto;
 }
 
 .item button {

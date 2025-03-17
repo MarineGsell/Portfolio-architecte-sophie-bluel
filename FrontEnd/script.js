@@ -1,6 +1,6 @@
 import { loginAdmin, logoutAdmin } from "./admin.js"
 import { galerieIndex, filtreObjets, filtreAppartements, filtreHotelsResto, filtreTous } from "./index.js"
-import { openModale, closeModale, switchModaleGalerie, switchModaleFormulaire } from "./modale.js"
+import { openModale, closeModale, switchModaleGalerie, switchModaleFormulaire, completeForm } from "./modale.js"
 
 // Récupération des travaux depuis le fichier JSON
 export async function getWorks() {
@@ -40,6 +40,9 @@ openModale()
 //Changements de page de la modale
 switchModaleFormulaire()
 switchModaleGalerie()
+
+// Complétion du formulaire
+completeForm()
 
 //Fermeture de la modale
 closeModale()

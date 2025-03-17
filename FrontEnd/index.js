@@ -16,6 +16,7 @@ export function galerieIndex() {
     
         // Récupération de mes données 
         photoProjet.src = works[i].imageUrl
+        photoProjet.alt = works[i].title
         legendeProjet.innerHTML = works[i].title
     }
 }
