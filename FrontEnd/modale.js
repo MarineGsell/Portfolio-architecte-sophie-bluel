@@ -33,13 +33,10 @@ export function switchModaleGalerie() {
     btnRetour.addEventListener("click", () => {
         retourGalerie()
         galerieModale()
-        // resetForm()
     })
 }
 export function switchModaleFormulaire() {
     const btnAjoutPhoto = document.getElementById("btn-ajout-photo")
-    
-    // Page Formulaire
     btnAjoutPhoto.addEventListener("click", () => {
         formulaireModale ()
     })
@@ -86,7 +83,7 @@ function galerieModale () {
     }
 }
 function retourGalerie () {
-    let galerie = document.getElementById("modale-galerie")
+    const galerie = document.getElementById("modale-galerie")
     galerie.classList.remove("cache")
     const formModale = document.getElementById("modale-form")
     formModale.classList.add("cache")
@@ -97,7 +94,7 @@ function retourGalerie () {
 // Formulaire de la modale
 // Apparition du formulaire dans la modale
 function formulaireModale () {
-    let galerie = document.getElementById("modale-galerie")
+    const galerie = document.getElementById("modale-galerie")
     galerie.classList.add("cache")
     const formModale = document.getElementById("modale-form")
     formModale.classList.remove("cache")
@@ -122,16 +119,18 @@ export function completeForm() {
                 // Récupération des infos du formulaire
                 const titre = document.getElementById("titre").value
                 const categorie = document.getElementById("categorie").value
-                let photo = document.getElementById("ajout-photo").value
+                const photo = document.getElementById("ajout-photo").value
+                let photoSizeOk = photoSize()   
                     
                 // Règles de validation du formulaire
-                if (titre !== "" && categorie !== "" && photo !== "") {
+                if (titre !== "" && categorie !== "" && photo !== "" && photoSizeOk) {
                     ajoutPhotoGalerie()
                     SupErreurPhotoForm()
                 } else {
                     if (photo === "") { erreurPhotoForm() }
                     if (titre === "") { erreurTitreForm() }
                     if (categorie === "") { erreurCategorieForm() }
+                    if (!photoSizeOk) { erreurTaillePhotoForm() }
                 }
             })
         } catch (error) {
@@ -148,7 +147,11 @@ function photoInput() {
         let photoProjetAjoutee = document.createElement("img")
         photoAjoutee.appendChild(photoProjetAjoutee)
         photoProjetAjoutee.classList.add("photo-projet-ajoutee") 
-        photoProjetAjoutee.src = URL.createObjectURL(inputPhoto.files[0])    
+        photoProjetAjoutee.src = URL.createObjectURL(inputPhoto.files[0])
+        let photoSizeOk = photoSize()   
+        if (!photoSizeOk){
+            erreurTaillePhotoForm()
+        } 
     } 
 }
   
@@ -186,24 +189,40 @@ async function ajoutPhotoGalerie() {
     majGalerieIndex()
 }
 
+// Taille photo max
+function photoSize() {
+    // Taille maximum de la photo
+    const taillePhotoMax = 4 * 1024 * 1024
+    // const taillePhotoMax = 10
+    const photoSize = document.getElementById("ajout-photo").files[0].size
+    let photoSizeOk = true
+    if (photoSize > taillePhotoMax) {
+        photoSizeOk = false
+    } 
+    return photoSizeOk
+}
+
 // Bouton du formulaire
 // Fonction pour vérifier si tous les champs sont remplis
 function formValide() {
     // Récupération du DOM
     const form = document.querySelector(".form-modale")
     const formInputs = form.querySelectorAll('input, select')
-    let btnForm = document.getElementById("btn-validation-form")
-    let inputRemplis = true;
+    const btnForm = document.getElementById("btn-validation-form")
 
     // Si un des champs est vide
+    let inputRemplis = true;
     formInputs.forEach(input => {
         if (!input.value.trim()) {
         inputRemplis = false
         }
     })
-  
+
+    // Si la photo est trop grosse
+    const photoSizeOk = photoSize()   
+
     // Changer l'apparence du bouton selon l'état du formulaire
-    if (inputRemplis) {
+    if (inputRemplis && photoSizeOk) {
         btnForm.classList.remove("btn-modale-inactif")
         btnForm.classList.add("btn-modale")
     }
@@ -235,29 +254,33 @@ function btnValidationInactif() {
 // Afichage des messages d'erreur
 function erreurPhotoForm () {
     let messageErreur = document.getElementById("message-erreur-photo")
-    messageErreur.classList.remove("cache")
+    messageErreur.innerText = "Vous devez rajouter une photo à votre projet"
+}
+function erreurTaillePhotoForm () {
+    let messageErreur = document.getElementById("message-erreur-photo")
+    messageErreur.innerText = "Votre photo est trop grosse"
 }
 function erreurTitreForm () {
     let messageErreur = document.getElementById("message-erreur-titre")
-    messageErreur.classList.remove("cache")
+    messageErreur.innerText = "Vous devez rajouter un titre à votre projet"
 }
 function erreurCategorieForm() {
     let messageErreur = document.getElementById("message-erreur-categorie")
-    messageErreur.classList.remove("cache")
+    messageErreur.innerText = "Vous devez rajouter une catégorie à votre projet"
 }
 
 // Suppression des messages d'erreur
 function SupErreurTitreForm () {
     let messageErreur = document.getElementById("message-erreur-titre")
-    messageErreur.classList.add("cache")
+    messageErreur.innerText = ""
 }
 function SupErreurPhotoForm () {
     let messageErreur = document.getElementById("message-erreur-photo")
-    messageErreur.classList.add("cache")
+    messageErreur.innerText = ""
 }
 function SupErreurCategorieForm() {
     let messageErreur = document.getElementById("message-erreur-categorie")
-    messageErreur.classList.add("cache")
+    messageErreur.innerText = ""
 }
 
 // Message de validation du formulaire
@@ -266,7 +289,7 @@ function validationMessageForm() {
     messageValidation.classList.remove("cache")
 }
 function suppressionMessageValidation() {
-    let form = document.querySelector(".form-modale")
+    const form = document.querySelector(".form-modale")
     form.addEventListener("input", () => {
         let messageValidation = document.querySelector(".message-succes")
         messageValidation.classList.add("cache")

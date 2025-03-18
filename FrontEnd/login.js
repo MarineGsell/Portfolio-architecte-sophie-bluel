@@ -22,7 +22,7 @@ async function recupUser(admin) {
         } else {
 
             // Affichage du message d'erreur
-            const erreur = document.querySelector(".erreur")
+            const erreur = document.querySelector(".message-erreur")
             erreur.innerHTML = "Erreur dans l’identifiant ou le mot de passe"
         }
     } catch(error) {
