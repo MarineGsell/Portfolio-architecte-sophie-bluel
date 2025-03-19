@@ -120,17 +120,20 @@ export function completeForm() {
                 const titre = document.getElementById("titre").value
                 const categorie = document.getElementById("categorie").value
                 const photo = document.getElementById("ajout-photo").value
-                let photoSizeOk = photoSize()   
                     
                 // Règles de validation du formulaire
-                if (titre !== "" && categorie !== "" && photo !== "" && photoSizeOk) {
-                    ajoutPhotoGalerie()
-                    SupErreurPhotoForm()
+                if (titre !== "" && categorie !== "" && photo !== "") {
+                    let photoSizeOk = photoSize() 
+                    if (photoSize){
+                        ajoutPhotoGalerie()
+                        SupErreurPhotoForm()    
+                    } else {
+                        if (!photoSizeOk) { erreurTaillePhotoForm() }
+                    }
                 } else {
                     if (photo === "") { erreurPhotoForm() }
                     if (titre === "") { erreurTitreForm() }
                     if (categorie === "") { erreurCategorieForm() }
-                    if (!photoSizeOk) { erreurTaillePhotoForm() }
                 }
             })
         } catch (error) {
